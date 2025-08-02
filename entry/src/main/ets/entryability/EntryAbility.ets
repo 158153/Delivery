@@ -1,6 +1,8 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import {defaultAd} from 'basic';
+import { AdvertClass} from 'basic';
 
 const DOMAIN = 0x0000;
 
@@ -18,6 +20,12 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
+//进入应用的时候，调用后台接口获取广告配置
+   const ad = new Promise <AdvertClass>((resolve) => {
+     setTimeout(()=>{
+       resolve(defaultAd)
+     },500)
+   })
 
 //创建子窗口,广告页面
 
