@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import {defaultAd} from 'basic';
+import {defaultAd, UserSettingClass} from 'basic';
 import { AdvertClass} from 'basic';
 
 const DOMAIN = 0x0000;
@@ -27,13 +27,29 @@ export default class EntryAbility extends UIAbility {
      },500)
    })
 
-//创建子窗口,广告页面
+//将广告配置存储到本地
+   const setting = new UserSettingClass(this.context)
+       // 先 await 拿到 Promise 结果
+   const adInstance = await ad;
+       // 再调用 setUserAd，此时参数类型为 AdvertClass，匹配方法期望类型
+   setting.setUserAd(adInstance)
 
-   const win = await  windowStage.createSubWindow("ad_window")
-//显示子窗口
-   await win.showWindow()
-   //加载广告页面，加载ui内容
-   win.setUIContent("pages/Start/Start")
+//通过广告的配置来决定是否显示广告
+   if ((await ad).showAd) {
+       //创建子窗口,广告页面
+
+     const win = await  windowStage.createSubWindow("ad_window")
+       //显示子窗口
+     await win.showWindow()
+       //加载广告页面，加载ui内容
+     win.setUIContent("pages/Start/Start")
+
+   }
+
+
+
+
+
 
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
