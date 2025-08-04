@@ -1,3 +1,5 @@
+//可复用的类
+
 export  class  AdvertClass {
   //广告的时长
   adTime : number =0
